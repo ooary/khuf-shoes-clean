@@ -23,10 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 
-  const track = document.querySelector("#reviewTrack");
-  const rail = document.querySelector("#reviewRail");
+  function startMarquee(trackSelector, railSelector, speed = 34) {
+    const track = document.querySelector(trackSelector);
+    const rail = document.querySelector(railSelector);
+    if (!track || !rail) return;
 
-  if (track && rail) {
     const originals = [...rail.children];
     originals.forEach((card) => {
       const clone = card.cloneNode(true);
@@ -37,11 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let offset = 0;
     let lastTime = performance.now();
     let paused = false;
-    const speed = 34;
 
-    function loopWidth() {
-      return originals.reduce((total, card) => total + card.getBoundingClientRect().width, 0) + 20 * originals.length;
-    }
+    const loopWidth = () =>
+      originals.reduce((total, card) => total + card.getBoundingClientRect().width, 0) + 20 * originals.length;
 
     function animate(time) {
       const delta = Math.min(40, time - lastTime);
@@ -61,6 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     track.addEventListener("focusout", () => (paused = false));
     requestAnimationFrame(animate);
   }
+
+  startMarquee("#galleryTrack", "#galleryRail", 30);
+  startMarquee("#reviewTrack", "#reviewRail", 34);
 
   document.querySelector("#contactForm")?.addEventListener("submit", (event) => {
     event.preventDefault();
