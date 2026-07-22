@@ -1,0 +1,8 @@
+node_modules
+.git
+qa.js
+khuf-*.png
+contract.md
+package*.json
+assets/khuf-logo-source
+assets/khuf/photo-*.jpg
