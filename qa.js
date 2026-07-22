@@ -27,6 +27,8 @@ const { chromium } = require('playwright-core');
  const href=await page.evaluate(()=>{const f=document.querySelector('#contactForm'),d=new FormData(f);return `https://wa.me/628991971197?text=${encodeURIComponent(`Halo Khuf, saya ${d.get('name')}. Saya ingin konsultasi ${d.get('service')} untuk ${d.get('item')}. Catatan: ${d.get('message')||'-'}`)}`});
  if(!href.includes('628991971197')||!decodeURIComponent(href).includes('Sneakers suede'))throw Error('WA construction');
  await page.goto('http://127.0.0.1:4319/index.html',{waitUntil:'networkidle'});
+ const shell=await page.evaluate(()=>({bodyMargin:getComputedStyle(document.body).margin,bodyPadding:getComputedStyle(document.body).padding,bodyWidth:document.body.getBoundingClientRect().width,viewport:innerWidth,pageWrappers:document.querySelectorAll('.page').length,headerParent:document.querySelector('header').parentElement.tagName,mainParent:document.querySelector('main').parentElement.tagName,footerParent:document.querySelector('footer').parentElement.tagName}));
+ if(shell.bodyMargin!=='0px'||shell.bodyPadding!=='0px'||Math.abs(shell.bodyWidth-shell.viewport)>1||shell.pageWrappers!==0||shell.headerParent!=='BODY'||shell.mainParent!=='BODY'||shell.footerParent!=='BODY') throw Error('fullscreen shell '+JSON.stringify(shell));
  const bg=await page.$eval('.hero-bg',e=>getComputedStyle(e).backgroundImage); if(!bg.includes('google-2.jpg')) throw Error('hero background missing');
  const reviewCount=await page.locator('.google-review-card').count(); if(reviewCount!==6) throw Error('review cards '+reviewCount);
  const names=await page.locator('.google-review-card h3').allTextContents(); if(!names.includes('Sausan Aulia')||!names.includes('Shaninca Divana')) throw Error('real reviewer names missing');
