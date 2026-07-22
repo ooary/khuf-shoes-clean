@@ -25,60 +25,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const track = document.querySelector("#reviewTrack");
   const rail = document.querySelector("#reviewRail");
-  const dots = document.querySelector("#reviewDots");
 
-  if (track && rail && dots) {
-    const cards = [...rail.children];
-    let index = 0;
-    let timer;
-
-    cards.forEach((_, cardIndex) => {
-      const dot = document.createElement("button");
-      dot.className = `review-dot${cardIndex === 0 ? " active" : ""}`;
-      dot.setAttribute("aria-label", `Ke review ${cardIndex + 1}`);
-      dot.addEventListener("click", () => {
-        index = cardIndex;
-        render();
-        restart();
-      });
-      dots.appendChild(dot);
+  if (track && rail) {
+    const originals = [...rail.children];
+    originals.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      rail.appendChild(clone);
     });
 
-    const visibleCount = () => (window.innerWidth < 768 ? 1 : 3);
-    const maxIndex = () => Math.max(0, cards.length - visibleCount());
-    const step = () => cards[0].getBoundingClientRect().width + 20;
+    let offset = 0;
+    let lastTime = performance.now();
+    let paused = false;
+    const speed = 34;
 
-    function render(animate = true) {
-      index = Math.min(index, maxIndex());
-      rail.style.transition = animate ? "transform .75s cubic-bezier(.22,.61,.36,1)" : "none";
-      rail.style.transform = `translate3d(${-index * step()}px,0,0)`;
-      [...dots.children].forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === index));
+    function loopWidth() {
+      return originals.reduce((total, card) => total + card.getBoundingClientRect().width, 0) + 20 * originals.length;
     }
 
-    function advance() {
-      if (index >= maxIndex()) {
-        index = 0;
-        render(false);
-        requestAnimationFrame(() => requestAnimationFrame(() => render(true)));
-      } else {
-        index += 1;
-        render(true);
+    function animate(time) {
+      const delta = Math.min(40, time - lastTime);
+      lastTime = time;
+      if (!paused) {
+        offset += (speed * delta) / 1000;
+        const width = loopWidth();
+        if (offset >= width) offset -= width;
+        rail.style.transform = `translate3d(${-offset}px,0,0)`;
       }
+      requestAnimationFrame(animate);
     }
 
-    function restart() {
-      clearInterval(timer);
-      timer = setInterval(advance, 3800);
-    }
-
-    window.addEventListener("resize", () => render(false));
-    track.addEventListener("mouseenter", () => clearInterval(timer));
-    track.addEventListener("mouseleave", restart);
-    track.addEventListener("focusin", () => clearInterval(timer));
-    track.addEventListener("focusout", restart);
-
-    render(false);
-    restart();
+    track.addEventListener("mouseenter", () => (paused = true));
+    track.addEventListener("mouseleave", () => (paused = false));
+    track.addEventListener("focusin", () => (paused = true));
+    track.addEventListener("focusout", () => (paused = false));
+    requestAnimationFrame(animate);
   }
 
   document.querySelector("#contactForm")?.addEventListener("submit", (event) => {
