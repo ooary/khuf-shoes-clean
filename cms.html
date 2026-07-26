@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Khuf Studio — Content Manager</title>
+  <link rel="icon" href="assets/khuf-favicon.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    *{box-sizing:border-box} body{font-family:Poppins,sans-serif;background:#f8fafc;color:#0f172a}
+    .nav-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:.75rem;color:#64748b;font-size:.875rem;font-weight:600}
+    .nav-item:hover,.nav-item.active{background:#eff6ff;color:#1674ea}.panel{background:#fff;border:1px solid #e2e8f0;border-radius:1rem;box-shadow:0 8px 30px rgba(15,23,42,.04)}
+    .field{width:100%;border:1px solid #cbd5e1;border-radius:.75rem;padding:.75rem .875rem;font-size:.875rem;outline:none}.field:focus{border-color:#1674ea;box-shadow:0 0 0 3px #dbeafe}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:.7rem;padding:.7rem 1rem;font-size:.82rem;font-weight:700}.btn-primary{background:#1674ea;color:#fff}.btn-soft{background:#f1f5f9;color:#334155}
+    .thumb{width:72px;height:58px;border-radius:.65rem;object-fit:cover;background:#e2e8f0}.tab-view{display:none}.tab-view.active{display:block}.modal-actions{position:sticky;bottom:0;background:#fff;z-index:2}
+    @media(max-width:900px){#sidebar{position:fixed;z-index:40;inset:0 auto 0 0;transform:translateX(-100%);transition:.2s}#sidebar.open{transform:none}main{margin-left:0!important}.desktop-only{display:none!important}}
+  </style>
+</head>
+<body>
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 p-5 flex flex-col">
+    <div class="flex items-center justify-between mb-8"><img src="assets/khuf-logo.png" alt="Khuf" class="w-28 h-14 object-contain"><button id="closeMenu" class="lg:hidden p-2"><i data-lucide="x" class="w-5"></i></button></div>
+    <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">CONTENT STUDIO</p>
+    <nav class="space-y-1" id="cmsNav">
+      <button class="nav-item active w-full" data-tab="dashboard"><i data-lucide="layout-dashboard" class="w-4"></i>Ringkasan</button>
+      <button class="nav-item w-full" data-tab="promo"><i data-lucide="badge-percent" class="w-4"></i>Promo</button>
+      <button class="nav-item w-full" data-tab="harga"><i data-lucide="receipt-text" class="w-4"></i>Daftar Harga</button>
+      <button class="nav-item w-full" data-tab="galeri"><i data-lucide="images" class="w-4"></i>Galeri</button>
+      <button class="nav-item w-full" data-tab="layanan"><i data-lucide="sparkles" class="w-4"></i>Layanan</button>
+    </nav>
+    <div class="mt-auto rounded-xl bg-slate-950 text-white p-4"><p class="text-xs text-slate-400">Website publik</p><p class="text-sm font-semibold mt-1">Khuf Clean & Care</p><a href="index.html" target="_blank" class="inline-flex items-center gap-2 text-xs text-blue-300 mt-3">Lihat website <i data-lucide="external-link" class="w-3"></i></a></div>
+  </aside>
+
+  <main class="ml-64 min-h-screen">
+    <header class="h-20 bg-white/90 backdrop-blur border-b border-slate-200 px-5 md:px-8 flex items-center justify-between sticky top-0 z-20">
+      <div class="flex items-center gap-3"><button id="openMenu" class="lg:hidden p-2 rounded-lg bg-slate-100"><i data-lucide="menu" class="w-5"></i></button><div><p class="text-xs text-slate-400">Khuf Studio</p><h1 id="pageTitle" class="font-bold">Ringkasan Konten</h1></div></div>
+      <div class="flex items-center gap-3"><span class="desktop-only inline-flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 px-3 py-2 rounded-full"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span>Semua perubahan tersimpan</span><div class="w-10 h-10 rounded-full bg-slate-950 text-white grid place-items-center text-xs font-bold">KC</div></div>
+    </header>
+
+    <div class="p-5 md:p-8 max-w-7xl mx-auto">
+      <section id="dashboard" class="tab-view active">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-7"><div><p class="text-sm text-blue-600 font-semibold">Selamat datang kembali</p><h2 class="text-3xl font-extrabold tracking-tight mt-1">Konten website dalam satu tempat.</h2><p class="text-slate-500 text-sm mt-2">Kelola informasi yang tampil di landing page tanpa menyentuh kode.</p></div><a href="index.html" target="_blank" class="btn btn-soft"><i data-lucide="eye" class="w-4"></i>Preview Website</a></div>
+        <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-7">
+          <div class="panel p-5"><div class="flex justify-between"><span class="p-2 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="badge-percent" class="w-5"></i></span><span class="text-xs text-amber-700 bg-amber-50 px-2 py-1 rounded-full h-fit">Draft</span></div><strong class="text-3xl block mt-5">1</strong><p class="text-sm text-slate-500">Promo</p></div>
+          <div class="panel p-5"><span class="inline-block p-2 bg-cyan-50 text-cyan-700 rounded-lg"><i data-lucide="receipt-text" class="w-5"></i></span><strong class="text-3xl block mt-5">12</strong><p class="text-sm text-slate-500">Item harga</p></div>
+          <div class="panel p-5"><span class="inline-block p-2 bg-violet-50 text-violet-700 rounded-lg"><i data-lucide="images" class="w-5"></i></span><strong class="text-3xl block mt-5">6</strong><p class="text-sm text-slate-500">Foto galeri</p></div>
+          <div class="panel p-5"><span class="inline-block p-2 bg-emerald-50 text-emerald-700 rounded-lg"><i data-lucide="sparkles" class="w-5"></i></span><strong class="text-3xl block mt-5">3</strong><p class="text-sm text-slate-500">Layanan aktif</p></div>
+        </div>
+        <div class="grid xl:grid-cols-[1.5fr_1fr] gap-6"><div class="panel p-6"><div class="flex justify-between items-center"><div><h3 class="font-bold">Akses cepat</h3><p class="text-xs text-slate-500 mt-1">Pilih konten yang ingin diperbarui.</p></div></div><div class="grid sm:grid-cols-2 gap-3 mt-5" id="quickLinks"></div></div><div class="panel p-6"><h3 class="font-bold">Aktivitas terbaru</h3><div class="mt-5 space-y-5 text-sm"><div class="flex gap-3"><span class="w-2 h-2 bg-blue-500 rounded-full mt-2"></span><div><b>Daftar harga diperbarui</b><p class="text-xs text-slate-400 mt-1">Hari ini, 09:21</p></div></div><div class="flex gap-3"><span class="w-2 h-2 bg-emerald-500 rounded-full mt-2"></span><div><b>Foto Repaint diterbitkan</b><p class="text-xs text-slate-400 mt-1">Kemarin, 16:40</p></div></div><div class="flex gap-3"><span class="w-2 h-2 bg-amber-500 rounded-full mt-2"></span><div><b>Promo disimpan sebagai draft</b><p class="text-xs text-slate-400 mt-1">25 Jul, 13:12</p></div></div></div></div></div>
+      </section>
+
+      <section id="promo" class="tab-view"><div class="section-head"></div><div class="panel overflow-hidden"><div class="p-5 border-b flex flex-wrap justify-between gap-3"><div><h3 class="font-bold">Daftar Promo</h3><p class="text-xs text-slate-500 mt-1">Atur periode dan status penayangan promo.</p></div><button class="btn btn-primary edit-btn" data-type="promo"><i data-lucide="plus" class="w-4"></i>Tambah Promo</button></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-50 text-slate-500 text-left"><tr><th class="p-4">Campaign</th><th class="p-4">Periode</th><th class="p-4">Status</th><th class="p-4 text-right">Aksi</th></tr></thead><tbody><tr class="border-t"><td class="p-4"><div class="flex items-center gap-3"><img class="thumb" src="assets/khuf-pricelist.jpg"><div><b>Promo Treatment Khuf</b><p class="text-xs text-slate-400">Detail penawaran menunggu konfirmasi</p></div></div></td><td class="p-4 text-slate-500">Belum ditentukan</td><td class="p-4"><span class="text-xs bg-amber-50 text-amber-700 px-2 py-1 rounded-full">Draft</span></td><td class="p-4 text-right"><button class="btn btn-soft edit-btn" data-type="promo">Edit</button></td></tr></tbody></table></div></div></section>
+
+      <section id="harga" class="tab-view"><div class="section-head"></div><div class="panel overflow-hidden"><div class="p-5 border-b flex flex-wrap justify-between gap-3"><div><h3 class="font-bold">Daftar Harga</h3><p class="text-xs text-slate-500 mt-1">Kelompokkan harga berdasarkan jenis treatment.</p></div><button class="btn btn-primary edit-btn" data-type="harga"><i data-lucide="plus" class="w-4"></i>Tambah Item</button></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-50 text-slate-500 text-left"><tr><th class="p-4">Layanan</th><th class="p-4">Kategori</th><th class="p-4">Harga mulai</th><th class="p-4">Status</th><th class="p-4 text-right">Aksi</th></tr></thead><tbody id="priceRows"></tbody></table></div></div></section>
+
+      <section id="galeri" class="tab-view"><div class="section-head"></div><div class="flex justify-end mb-5"><button class="btn btn-primary edit-btn" data-type="galeri"><i data-lucide="upload" class="w-4"></i>Upload Foto</button></div><div id="galleryGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5"></div></section>
+
+      <section id="layanan" class="tab-view"><div class="section-head"></div><div class="flex justify-end mb-5"><button class="btn btn-primary edit-btn" data-type="layanan"><i data-lucide="plus" class="w-4"></i>Tambah Layanan</button></div><div id="serviceGrid" class="grid md:grid-cols-3 gap-5"></div></section>
+    </div>
+  </main>
+
+  <div id="modal" class="hidden fixed inset-0 z-50 bg-slate-950/60 p-4 items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <form id="editForm" class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div class="p-5 border-b flex items-center justify-between"><div><p class="text-xs text-blue-600 font-bold tracking-wider">CONTENT EDITOR</p><h2 id="modalTitle" class="font-bold text-xl mt-1">Edit Konten</h2></div><button type="button" id="closeModal" class="p-2 rounded-lg bg-slate-100"><i data-lucide="x" class="w-5"></i></button></div>
+      <div class="p-5 space-y-3"><label class="block text-sm font-semibold">Judul<input id="contentTitle" class="field mt-1.5" required value="Deep Cleaning"></label><label class="block text-sm font-semibold">Deskripsi<textarea class="field mt-1.5 min-h-20" required>Rekomendasi treatment setelah pemeriksaan kondisi.</textarea></label><label class="block text-sm font-semibold">Status<select class="field mt-1.5"><option>Aktif</option><option>Draft</option><option>Arsip</option></select></label><label class="block text-sm font-semibold">Gambar<div class="border-2 border-dashed border-slate-200 rounded-xl p-4 mt-1.5 text-center text-slate-400"><i data-lucide="image-plus" class="w-6 mx-auto mb-1"></i><span class="text-xs">Klik atau tarik gambar ke sini</span></div></label></div>
+      <div class="modal-actions p-4 border-t flex justify-end gap-3"><button type="button" id="cancelModal" class="btn btn-soft">Batal</button><button class="btn btn-primary"><i data-lucide="save" class="w-4"></i>Simpan Perubahan</button></div>
+    </form>
+  </div>
+  <div id="toast" class="fixed right-5 bottom-5 translate-y-24 opacity-0 transition-all bg-slate-950 text-white rounded-xl px-5 py-3 text-sm shadow-xl">Perubahan tersimpan di mockup</div>
+  <script src="cms.js"></script>
+</body>
+</html>
