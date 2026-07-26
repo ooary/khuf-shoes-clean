@@ -3,7 +3,7 @@ const { chromium } = require('playwright-core');
  const browser=await chromium.launch({headless:true,executablePath:'/usr/bin/chromium',args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1440,height:1000}});
  const errors=[]; page.on('pageerror',e=>errors.push(e.message));
- for(const f of ['index.html','layanan.html','lokasi.html','kontak.html','promo.html']){
+ for(const f of ['index.html','layanan.html','lokasi.html','kontak.html','promo.html','pricelist.html']){
   await page.goto('http://127.0.0.1:4319/'+f,{waitUntil:'networkidle'});
   if(!(await page.locator('header').count())||!(await page.locator('main').count())) throw Error(f+' structure');
   if(!(await page.locator('svg.lucide').count())) throw Error(f+' lucide');
