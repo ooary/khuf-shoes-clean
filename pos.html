@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Khuf Studio — POS</title>
+  <link rel="icon" href="assets/khuf-favicon.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    *{box-sizing:border-box}html,body{overflow-x:clip}body{margin:0;font-family:Poppins,sans-serif;background:#f8fafc;color:#0f172a}
+    button,input,select,textarea{font:inherit}.panel{background:#fff;border:1px solid #e2e8f0;border-radius:1rem;box-shadow:0 8px 30px rgba(15,23,42,.04)}
+    .nav-item{display:flex;align-items:center;gap:.75rem;width:100%;padding:.75rem 1rem;border-radius:.75rem;color:#64748b;font-size:.875rem;font-weight:600;text-align:left}
+    .nav-item:hover,.nav-item.active{background:#eff6ff;color:#1674ea}.view{display:none}.view[data-active="true"]{display:block}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:.7rem;padding:.72rem 1rem;font-size:.82rem;font-weight:700;transition:.15s}
+    .btn-primary{background:#1674ea;color:#fff}.btn-primary:hover{background:#0d62ca}.btn-soft{background:#f1f5f9;color:#334155}.btn-soft:hover{background:#e2e8f0}
+    .field{width:100%;border:1px solid #cbd5e1;border-radius:.75rem;padding:.74rem .85rem;font-size:.875rem;background:#fff;outline:none}.field:focus{border-color:#1674ea;box-shadow:0 0 0 3px #dbeafe}
+    .label{display:block;font-size:.78rem;font-weight:700;color:#334155}.badge{display:inline-flex;align-items:center;gap:.38rem;padding:.34rem .58rem;border-radius:999px;font-size:.68rem;font-weight:700;white-space:nowrap}
+    .modal-scroll{max-height:calc(90vh - 144px);overflow-y:auto}.drawer{transform:translateX(100%);transition:transform .22s ease}.drawer.open{transform:none}
+    #sidebar{height:100vh;min-height:100vh}.step-line{position:relative}.step-line:not(:last-child)::after{content:"";position:absolute;left:11px;top:25px;bottom:-15px;width:2px;background:#e2e8f0}
+    @media(max-width:900px){#sidebar{position:fixed;z-index:50;inset:0 auto 0 0;transform:translateX(-100%);transition:.2s}#sidebar.open{transform:none}main{margin-left:0!important}.desktop-only{display:none!important}.drawer{width:100%!important}}
+  </style>
+</head>
+<body>
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 min-h-screen bg-white border-r border-slate-200 p-5 flex flex-col overflow-y-auto">
+    <div class="flex items-center justify-between mb-7"><img src="assets/khuf-logo.png" alt="Khuf" class="w-28 h-14 object-contain"><button id="closeMenu" class="lg:hidden p-2" aria-label="Tutup menu"><i data-lucide="x" class="w-5"></i></button></div>
+    <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">POS</p>
+    <nav class="space-y-1">
+      <button class="nav-item active" data-nav="dashboard"><i data-lucide="layout-dashboard" class="w-4"></i>Ringkasan</button>
+      <button class="nav-item" data-nav="orders"><i data-lucide="clipboard-list" class="w-4"></i>Order & Pengerjaan</button>
+      <button class="nav-item" data-nav="customers"><i data-lucide="users" class="w-4"></i>Pelanggan</button>
+      <button class="nav-item" data-nav="services"><i data-lucide="sparkles" class="w-4"></i>Layanan & Harga</button>
+    </nav>
+    <div class="mt-5 pt-5 border-t border-slate-100">
+      <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">CMS</p>
+      <nav class="space-y-1">
+        <a href="cms.html#dashboard" class="nav-item"><i data-lucide="panels-top-left" class="w-4"></i>Ringkasan Konten</a>
+        <a href="cms.html#promo" class="nav-item"><i data-lucide="badge-percent" class="w-4"></i>Promo</a>
+        <a href="cms.html#harga" class="nav-item"><i data-lucide="receipt-text" class="w-4"></i>Daftar Harga</a>
+        <a href="cms.html#galeri" class="nav-item"><i data-lucide="images" class="w-4"></i>Galeri</a>
+        <a href="cms.html#layanan" class="nav-item"><i data-lucide="image" class="w-4"></i>Layanan Website</a>
+      </nav>
+    </div>
+    <div class="mt-auto rounded-xl bg-slate-950 text-white p-4">
+      <p class="text-[11px] text-slate-400">Cabang aktif</p>
+      <div class="flex items-center justify-between mt-2"><span class="text-sm font-semibold">Pejaten Barat</span><span class="w-2 h-2 rounded-full bg-emerald-400"></span></div>
+      <button class="text-xs text-blue-300 mt-3 inline-flex items-center gap-1">Ganti cabang <i data-lucide="chevron-right" class="w-3"></i></button>
+    </div>
+  </aside>
+
+  <main class="ml-64 min-h-screen">
+    <header class="h-20 bg-white/90 backdrop-blur border-b border-slate-200 px-5 md:px-8 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center gap-3"><button id="openMenu" class="lg:hidden p-2 rounded-lg bg-slate-100" aria-label="Buka menu"><i data-lucide="menu" class="w-5"></i></button><div><p class="text-xs text-slate-400">Khuf Studio</p><h1 id="pageTitle" class="font-bold">Ringkasan Operasional</h1></div></div>
+      <div class="flex items-center gap-3"><div class="desktop-only text-right"><p class="text-xs font-semibold">Jumat, 31 Juli 2026</p><p class="text-[11px] text-slate-400">Pejaten Barat</p></div><div class="w-10 h-10 rounded-full bg-slate-950 text-white grid place-items-center text-xs font-bold">KC</div></div>
+    </header>
+
+    <div class="p-5 pb-[calc(2rem+env(safe-area-inset-bottom))] md:p-8 xl:px-10 max-w-[1440px] mx-auto">
+      <section id="dashboard" class="view" data-view="dashboard" data-active="true">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-7">
+          <div><p class="text-sm text-blue-600 font-semibold">OPERASIONAL HARI INI</p><h2 class="text-3xl font-extrabold tracking-tight mt-1">Semua order, tanpa kehilangan jejak.</h2><p class="text-slate-500 text-sm mt-2">Pantau barang masuk, progres treatment, dan pembayaran dari satu tempat.</p></div>
+          <button id="newOrderButton" class="btn btn-primary"><i data-lucide="plus" class="w-4"></i>Buat Order Baru</button>
+        </div>
+
+        <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-7">
+          <article class="panel p-5"><div class="flex justify-between"><span class="p-2 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="package-plus" class="w-5"></i></span><span class="badge bg-blue-50 text-blue-700">+3 hari ini</span></div><strong class="text-3xl block mt-5">12</strong><p class="text-sm text-slate-500">Order aktif</p></article>
+          <article class="panel p-5"><div class="flex justify-between"><span class="p-2 bg-amber-50 text-amber-700 rounded-lg"><i data-lucide="paintbrush" class="w-5"></i></span><span class="badge bg-amber-50 text-amber-700">Perlu dikerjakan</span></div><strong class="text-3xl block mt-5">7</strong><p class="text-sm text-slate-500">Dalam proses</p></article>
+          <article class="panel p-5"><div class="flex justify-between"><span class="p-2 bg-emerald-50 text-emerald-700 rounded-lg"><i data-lucide="circle-check-big" class="w-5"></i></span><span class="badge bg-emerald-50 text-emerald-700">Siap dikabari</span></div><strong class="text-3xl block mt-5">4</strong><p class="text-sm text-slate-500">Siap diambil</p></article>
+          <article class="panel p-5"><div class="flex justify-between"><span class="p-2 bg-violet-50 text-violet-700 rounded-lg"><i data-lucide="wallet-cards" class="w-5"></i></span><span class="badge bg-rose-50 text-rose-700">2 belum lunas</span></div><strong class="text-3xl block mt-5">Rp 1,28 jt</strong><p class="text-sm text-slate-500">Penjualan hari ini</p></article>
+        </div>
+
+        <div class="grid xl:grid-cols-[minmax(0,2.4fr)_minmax(280px,.9fr)] gap-6">
+          <article class="panel overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex flex-wrap justify-between gap-3"><div><h3 class="font-bold">Prioritas pengerjaan</h3><p class="text-xs text-slate-500 mt-1">Order terdekat dan yang melewati target.</p></div><button class="btn btn-soft" data-go="orders">Lihat semua <i data-lucide="arrow-right" class="w-4"></i></button></div>
+            <div class="overflow-x-auto"><table class="w-full text-sm min-w-[820px]"><thead class="bg-slate-50 text-slate-500 text-left text-xs"><tr><th class="p-4">Order</th><th class="p-4">Pelanggan</th><th class="p-4">Item & Treatment</th><th class="p-4">Target</th><th class="p-4 min-w-[150px]">Status</th></tr></thead><tbody>
+              <tr class="border-t"><td class="p-4 font-semibold">KHUF-260731-005</td><td class="p-4"><b>Dimas Saputra</b><p class="text-xs text-slate-400">0812••••8821</p></td><td class="p-4">Adidas Samba<p class="text-xs text-slate-400">Deep Cleaning</p></td><td class="p-4 text-rose-600 font-semibold">Hari ini</td><td class="p-4"><span class="badge bg-amber-50 text-amber-700">Dalam proses</span></td></tr>
+              <tr class="border-t"><td class="p-4 font-semibold">KHUF-260730-014</td><td class="p-4"><b>Nadia Putri</b><p class="text-xs text-slate-400">0857••••1270</p></td><td class="p-4">Coach Tote Bag<p class="text-xs text-slate-400">Repair</p></td><td class="p-4 text-rose-600 font-semibold">Terlambat 1 hari</td><td class="p-4"><span class="badge bg-rose-50 text-rose-700">Perlu perhatian</span></td></tr>
+              <tr class="border-t"><td class="p-4 font-semibold">KHUF-260731-003</td><td class="p-4"><b>Raka Pratama</b><p class="text-xs text-slate-400">0896••••4439</p></td><td class="p-4">Nike Air Jordan 1<p class="text-xs text-slate-400">Unyellowing</p></td><td class="p-4">2 Agu 2026</td><td class="p-4"><span class="badge bg-blue-50 text-blue-700">Diterima</span></td></tr>
+            </tbody></table></div>
+          </article>
+
+          <div class="space-y-6">
+            <article class="panel p-5"><div class="flex justify-between items-center"><div><h3 class="font-bold">Pembayaran</h3><p class="text-xs text-slate-500 mt-1">Ringkasan hari ini.</p></div><span class="p-2 bg-emerald-50 text-emerald-700 rounded-lg"><i data-lucide="banknote" class="w-5"></i></span></div><div class="mt-5 space-y-4"><div><div class="flex justify-between text-sm"><span class="text-slate-500">Lunas</span><b>Rp 980.000</b></div><div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden"><div class="h-full w-[76%] bg-emerald-500 rounded-full"></div></div></div><div><div class="flex justify-between text-sm"><span class="text-slate-500">Belum lunas</span><b>Rp 300.000</b></div><div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden"><div class="h-full w-[24%] bg-amber-400 rounded-full"></div></div></div></div></article>
+            <article class="panel p-5 bg-slate-950 text-white border-slate-950"><p class="text-xs text-blue-300 font-semibold">QUICK ACTION</p><h3 class="font-bold text-lg mt-2">Ada barang baru masuk?</h3><p class="text-xs leading-5 text-slate-400 mt-2">Catat customer, kondisi barang, treatment, estimasi, dan pembayaran awal.</p><button class="btn bg-white text-slate-950 w-full mt-5" data-new-order><i data-lucide="plus" class="w-4"></i>Buat Order</button></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="orders" class="view" data-view="orders" data-active="false">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-7"><div><p class="text-sm text-blue-600 font-semibold">ORDER & PENGERJAAN</p><h2 class="text-3xl font-extrabold tracking-tight mt-1">Antrean kerja Khuf.</h2><p class="text-slate-500 text-sm mt-2">Status pengerjaan dan pembayaran ditampilkan terpisah agar tidak rancu.</p></div><button class="btn btn-primary" data-new-order><i data-lucide="plus" class="w-4"></i>Buat Order Baru</button></div>
+        <div class="panel overflow-hidden">
+          <div class="p-4 border-b flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between"><div class="relative w-full lg:max-w-md"><i data-lucide="search" class="absolute left-3 top-3 w-4 text-slate-400"></i><input id="orderSearch" class="field pl-10" placeholder="Cari nomor order, pelanggan, atau WhatsApp"></div><div class="flex gap-2 overflow-x-auto"><button class="badge bg-slate-950 text-white">Semua 12</button><button class="badge bg-blue-50 text-blue-700">Diterima 3</button><button class="badge bg-amber-50 text-amber-700">Diproses 5</button><button class="badge bg-emerald-50 text-emerald-700">Siap diambil 4</button></div></div>
+          <div class="overflow-x-auto"><table class="w-full text-sm min-w-[980px]"><thead class="bg-slate-50 text-slate-500 text-left text-xs"><tr><th class="p-4">Order</th><th class="p-4">Pelanggan</th><th class="p-4">Barang</th><th class="p-4">Target selesai</th><th class="p-4">Pengerjaan</th><th class="p-4">Pembayaran</th><th class="p-4 text-right">Aksi</th></tr></thead><tbody id="orderRows"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="customers" class="view" data-view="customers" data-active="false">
+        <div class="mb-7"><p class="text-sm text-blue-600 font-semibold">PELANGGAN</p><h2 class="text-3xl font-extrabold tracking-tight mt-1">Riwayat customer, bukan sekadar kontak.</h2><p class="text-slate-500 text-sm mt-2">Cari berdasarkan nomor WhatsApp dan lihat order yang pernah ditangani.</p></div>
+        <div class="panel overflow-hidden"><div class="p-4 border-b"><div class="relative max-w-md"><i data-lucide="search" class="absolute left-3 top-3 w-4 text-slate-400"></i><input class="field pl-10" placeholder="Cari nama atau nomor WhatsApp"></div></div><div class="overflow-x-auto"><table class="w-full text-sm min-w-[760px]"><thead class="bg-slate-50 text-slate-500 text-left text-xs"><tr><th class="p-4">Pelanggan</th><th class="p-4">WhatsApp</th><th class="p-4">Total order</th><th class="p-4">Order terakhir</th><th class="p-4">Nilai transaksi</th><th class="p-4 text-right">Aksi</th></tr></thead><tbody id="customerRows"></tbody></table></div></div>
+      </section>
+
+      <section id="services" class="view" data-view="services" data-active="false">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-7"><div><p class="text-sm text-blue-600 font-semibold">MASTER DATA</p><h2 class="text-3xl font-extrabold tracking-tight mt-1">Layanan dan harga dasar.</h2><p class="text-slate-500 text-sm mt-2">Harga dapat disesuaikan setelah pemeriksaan kondisi barang.</p></div><button class="btn btn-primary"><i data-lucide="plus" class="w-4"></i>Tambah Layanan</button></div>
+        <div id="serviceCards" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="orderModal" class="hidden fixed inset-0 z-[60] bg-slate-950/60 p-3 md:p-6 items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <form id="orderForm" class="bg-white rounded-2xl w-full max-w-3xl max-h-[94vh] overflow-hidden shadow-2xl flex flex-col">
+      <div class="p-5 border-b flex justify-between gap-4"><div><p class="text-xs text-blue-600 font-bold tracking-wider">ORDER BARU</p><h2 id="orderModalTitle" class="font-bold text-xl mt-1">Terima barang pelanggan</h2><p class="text-xs text-slate-500 mt-1">Satu order dapat berisi beberapa barang setelah backend dibuat.</p></div><button type="button" id="closeOrderModal" class="p-2 rounded-lg bg-slate-100 h-fit" aria-label="Tutup"><i data-lucide="x" class="w-5"></i></button></div>
+      <div class="modal-scroll p-5 space-y-6">
+        <section><div class="flex items-center gap-2 mb-3"><span class="w-7 h-7 bg-blue-50 text-blue-600 rounded-full grid place-items-center text-xs font-bold">1</span><h3 class="font-bold text-sm">Pelanggan</h3></div><div class="grid md:grid-cols-2 gap-3"><label class="label">Nama pelanggan<input id="customerName" class="field mt-1.5" required placeholder="Contoh: Ary Pratama"></label><label class="label">Nomor WhatsApp<input id="customerPhone" class="field mt-1.5" required inputmode="tel" placeholder="08xxxxxxxxxx"></label></div></section>
+        <section class="pt-5 border-t"><div class="flex items-center gap-2 mb-3"><span class="w-7 h-7 bg-blue-50 text-blue-600 rounded-full grid place-items-center text-xs font-bold">2</span><h3 class="font-bold text-sm">Barang dan treatment</h3></div><div class="grid md:grid-cols-2 gap-3"><label class="label">Nama/jenis barang<input id="itemName" class="field mt-1.5" required placeholder="Contoh: Nike Air Force 1"></label><label class="label">Treatment<select id="serviceSelect" class="field mt-1.5" required><option value="">Pilih layanan</option><option>Deep Cleaning</option><option>Unyellowing</option><option>Repaint</option><option>Repair</option></select></label><label class="label">Harga estimasi<input id="itemPrice" class="field mt-1.5" type="number" min="0" required placeholder="85000"></label><label class="label">Target selesai<input id="targetDate" class="field mt-1.5" type="date" value="2026-08-04" required></label><label class="label md:col-span-2">Catatan kondisi<textarea class="field mt-1.5 min-h-20" placeholder="Noda membandel di upper, bagian midsole menguning..."></textarea></label></div><div class="mt-3 border-2 border-dashed border-slate-200 rounded-xl p-4 flex items-center gap-3 text-slate-500"><span class="p-2 bg-slate-100 rounded-lg"><i data-lucide="camera" class="w-5"></i></span><div><b class="text-xs text-slate-700">Foto kondisi awal</b><p class="text-[11px] mt-1">Mockup upload — belum menyimpan file.</p></div></div></section>
+        <section class="pt-5 border-t"><div class="flex items-center gap-2 mb-3"><span class="w-7 h-7 bg-blue-50 text-blue-600 rounded-full grid place-items-center text-xs font-bold">3</span><h3 class="font-bold text-sm">Pembayaran awal</h3></div><div class="grid md:grid-cols-2 gap-3"><label class="label">Status pembayaran<select class="field mt-1.5"><option>Belum bayar</option><option>Bayar sebagian</option><option>Lunas</option></select></label><label class="label">Metode<select class="field mt-1.5"><option>Belum ditentukan</option><option>Cash</option><option>QRIS</option><option>Transfer</option></select></label></div></section>
+      </div>
+      <div class="p-4 border-t flex flex-col-reverse sm:flex-row justify-end gap-3 bg-white"><button type="button" id="cancelOrderModal" class="btn btn-soft">Batal</button><button class="btn btn-primary"><i data-lucide="save" class="w-4"></i>Simpan Order</button></div>
+    </form>
+  </div>
+
+  <div id="orderSuccess" class="hidden fixed inset-0 z-[70] bg-slate-950/70 p-4 items-center justify-center"><div class="bg-white rounded-2xl max-w-md w-full p-7 text-center shadow-2xl"><span class="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 grid place-items-center mx-auto"><i data-lucide="check" class="w-7"></i></span><h2 class="font-extrabold text-xl mt-4">Order berhasil dibuat</h2><p class="text-sm text-slate-500 mt-2">Nomor order <b class="text-slate-900">KHUF-260731-006</b> siap dikirim ke pelanggan.</p><div class="grid gap-2 mt-6"><button id="sendWhatsapp" class="btn bg-[#25D366] text-white"><i data-lucide="message-circle" class="w-4"></i>Kirim via WhatsApp</button><button id="finishSuccess" class="btn btn-soft">Kembali ke antrean</button></div></div></div>
+
+  <div id="detailBackdrop" class="hidden fixed inset-0 bg-slate-950/40 z-40"></div>
+  <aside id="orderDetail" class="drawer fixed z-50 right-0 top-0 bottom-0 w-[520px] bg-white shadow-2xl overflow-y-auto" aria-hidden="true">
+    <div class="sticky top-0 bg-white border-b p-5 flex justify-between z-10"><div><p class="text-xs text-blue-600 font-bold tracking-wider">DETAIL ORDER</p><h2 id="detailOrderNumber" class="font-bold text-xl mt-1">KHUF-260731-005</h2></div><button id="closeOrderDetail" class="p-2 rounded-lg bg-slate-100 h-fit"><i data-lucide="x" class="w-5"></i></button></div>
+    <div class="p-5 space-y-6">
+      <section class="panel p-4 shadow-none"><div class="flex justify-between gap-3"><div><p class="text-xs text-slate-400">Pelanggan</p><h3 class="font-bold mt-1">Dimas Saputra</h3><p class="text-xs text-slate-500 mt-1">0812-4432-8821</p></div><button class="btn btn-soft h-fit"><i data-lucide="message-circle" class="w-4"></i>WhatsApp</button></div></section>
+      <section><div class="flex items-center justify-between"><h3 class="font-bold">Barang & treatment</h3><span class="badge bg-amber-50 text-amber-700">Dalam proses</span></div><article class="panel p-4 shadow-none mt-3"><div class="flex gap-3"><img src="assets/layanan-deep-cleaning.jpg" alt="Adidas Samba" class="w-24 h-20 object-cover rounded-xl"><div><h4 class="font-bold text-sm">Adidas Samba — Putih</h4><p class="text-xs text-blue-600 font-semibold mt-1">Deep Cleaning</p><p class="text-xs text-slate-500 mt-2">Noda pada upper dan sisi midsole.</p></div></div><div class="flex justify-between text-sm mt-4 pt-4 border-t"><span class="text-slate-500">Harga treatment</span><b>Rp 85.000</b></div></article></section>
+      <section><h3 class="font-bold">Status pengerjaan</h3><div class="mt-4 space-y-4"><div class="step-line flex gap-3"><span class="w-6 h-6 bg-emerald-500 text-white rounded-full grid place-items-center shrink-0"><i data-lucide="check" class="w-3"></i></span><div><b class="text-sm">Barang diterima</b><p class="text-xs text-slate-400 mt-1">31 Jul, 09:15 · Rani</p></div></div><div class="step-line flex gap-3"><span class="w-6 h-6 bg-amber-500 text-white rounded-full grid place-items-center shrink-0"><i data-lucide="loader-circle" class="w-3"></i></span><div><b class="text-sm">Dalam proses</b><p class="text-xs text-slate-400 mt-1">31 Jul, 11:40 · Bimo</p></div></div><div class="step-line flex gap-3"><span class="w-6 h-6 bg-slate-100 text-slate-400 rounded-full grid place-items-center shrink-0">3</span><div><b class="text-sm text-slate-400">Siap diambil</b></div></div></div><button class="btn btn-primary w-full mt-5">Update menjadi Siap Diambil</button></section>
+      <section class="panel p-4 shadow-none"><div class="flex justify-between"><div><p class="text-xs text-slate-400">Pembayaran</p><h3 class="font-bold mt-1">Belum bayar</h3></div><b class="text-lg">Rp 85.000</b></div><button class="btn btn-soft w-full mt-4"><i data-lucide="wallet-cards" class="w-4"></i>Catat Pembayaran</button></section>
+    </div>
+  </aside>
+
+  <div id="toast" class="fixed right-5 bottom-5 translate-y-24 opacity-0 transition-all bg-slate-950 text-white rounded-xl px-5 py-3 text-sm shadow-xl z-[80]">Aksi tersimpan di mockup</div>
+  <script src="pos-runtime.260731d.js"></script>
+</body>
+</html>

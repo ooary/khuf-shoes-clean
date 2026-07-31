@@ -19,16 +19,25 @@
   </style>
 </head>
 <body>
-  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 p-5 flex flex-col">
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 p-5 flex flex-col overflow-y-auto">
     <div class="flex items-center justify-between mb-8"><img src="assets/khuf-logo.png" alt="Khuf" class="w-28 h-14 object-contain"><button id="closeMenu" class="lg:hidden p-2"><i data-lucide="x" class="w-5"></i></button></div>
-    <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">CONTENT STUDIO</p>
-    <nav class="space-y-1" id="cmsNav">
-      <button class="nav-item active w-full" data-tab="dashboard"><i data-lucide="layout-dashboard" class="w-4"></i>Ringkasan</button>
-      <button class="nav-item w-full" data-tab="promo"><i data-lucide="badge-percent" class="w-4"></i>Promo</button>
-      <button class="nav-item w-full" data-tab="harga"><i data-lucide="receipt-text" class="w-4"></i>Daftar Harga</button>
-      <button class="nav-item w-full" data-tab="galeri"><i data-lucide="images" class="w-4"></i>Galeri</button>
-      <button class="nav-item w-full" data-tab="layanan"><i data-lucide="sparkles" class="w-4"></i>Layanan</button>
+    <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">POS</p>
+    <nav class="space-y-1">
+      <a class="nav-item w-full" href="pos.html#dashboard"><i data-lucide="layout-dashboard" class="w-4"></i>Ringkasan Operasional</a>
+      <a class="nav-item w-full" href="pos.html#orders"><i data-lucide="clipboard-list" class="w-4"></i>Order & Pengerjaan</a>
+      <a class="nav-item w-full" href="pos.html#customers"><i data-lucide="users" class="w-4"></i>Pelanggan</a>
+      <a class="nav-item w-full" href="pos.html#services"><i data-lucide="sparkles" class="w-4"></i>Layanan & Harga</a>
     </nav>
+    <div class="mt-5 pt-5 border-t border-slate-100">
+      <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">CMS</p>
+      <nav class="space-y-1" id="cmsNav">
+        <button class="nav-item active w-full" data-tab="dashboard"><i data-lucide="panels-top-left" class="w-4"></i>Ringkasan Konten</button>
+        <button class="nav-item w-full" data-tab="promo"><i data-lucide="badge-percent" class="w-4"></i>Promo</button>
+        <button class="nav-item w-full" data-tab="harga"><i data-lucide="receipt-text" class="w-4"></i>Daftar Harga</button>
+        <button class="nav-item w-full" data-tab="galeri"><i data-lucide="images" class="w-4"></i>Galeri</button>
+        <button class="nav-item w-full" data-tab="layanan"><i data-lucide="image" class="w-4"></i>Layanan Website</button>
+      </nav>
+    </div>
     <div class="mt-auto rounded-xl bg-slate-950 text-white p-4"><p class="text-xs text-slate-400">Website publik</p><p class="text-sm font-semibold mt-1">Khuf Clean & Care</p><a href="index.html" target="_blank" class="inline-flex items-center gap-2 text-xs text-blue-300 mt-3">Lihat website <i data-lucide="external-link" class="w-3"></i></a></div>
   </aside>
 

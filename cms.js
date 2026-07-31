@@ -4,8 +4,9 @@ const prices=[['Deep Cleaning','Cleaning','Rp 45.000'],['Unyellowing','Treatment
 const services=[['Deep Cleaning','assets/layanan-deep-cleaning.jpg'],['Unyellowing','assets/layanan-unyellowing.jpg'],['Repaint','assets/layanan-repaint.jpg']];
 const gallery=Array.from({length:6},(_,i)=>[`Hasil perawatan ${i+1}`,`assets/gallery-${i+1}.jpg`]);
 const nav=document.querySelectorAll('[data-tab]'), views=document.querySelectorAll('.tab-view');
-function switchTab(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(n=>n.classList.toggle('active',n.dataset.tab===id));pageTitle.textContent=titles[id];sidebar.classList.remove('open');window.scrollTo(0,0)}
-nav.forEach(n=>n.onclick=()=>switchTab(n.dataset.tab));
+function switchTab(id){if(!titles[id])id='dashboard';views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(n=>n.classList.toggle('active',n.dataset.tab===id));pageTitle.textContent=titles[id];sidebar.classList.remove('open');window.scrollTo(0,0)}
+nav.forEach(n=>n.onclick=()=>{switchTab(n.dataset.tab);history.replaceState(null,'',`#${n.dataset.tab}`)});
+const initialTab=window.location.hash.slice(1);if(initialTab)switchTab(initialTab);window.addEventListener('hashchange',()=>switchTab(window.location.hash.slice(1)));
 quickLinks.innerHTML=quick.map(([id,icon,title,desc])=>`<button data-go="${id}" class="text-left border border-slate-200 rounded-xl p-4 hover:border-blue-300 hover:bg-blue-50/40 transition"><i data-lucide="${icon}" class="w-5 text-blue-600"></i><b class="block mt-3 text-sm">${title}</b><span class="text-xs text-slate-400">${desc}</span></button>`).join('');
 document.querySelectorAll('[data-go]').forEach(x=>x.onclick=()=>switchTab(x.dataset.go));
 document.querySelectorAll('.section-head').forEach((x)=>{const id=x.closest('section').id;x.innerHTML=`<div class="mb-7"><p class="text-sm text-blue-600 font-semibold">CONTENT MANAGER</p><h2 class="text-3xl font-extrabold tracking-tight mt-1">${titles[id]}</h2><p class="text-slate-500 text-sm mt-2">Perubahan di sini akan mengatur konten website publik setelah diterbitkan.</p></div>`});
