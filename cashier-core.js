@@ -10,12 +10,18 @@
     { id: 4, name: 'Raka Pratama', phone: '0896-2301-4439', address: 'Cilandak, Jakarta Selatan' }
   ];
 
-  const services = {
-    'Deep Cleaning': 45000,
-    'Unyellowing': 75000,
-    'Repaint': 150000,
-    'Repair': 100000
-  };
+  const catalog = [
+    { id: 'shoe-deep-cleaning', category: 'Sepatu', service: 'Deep Cleaning', price: 45000, icon: 'footprints', color: 'blue', description: 'Pembersihan menyeluruh upper, midsole, dan outsole.' },
+    { id: 'shoe-unyellowing', category: 'Sepatu', service: 'Unyellowing', price: 75000, icon: 'sun-medium', color: 'amber', description: 'Treatment oksidasi pada midsole yang menguning.' },
+    { id: 'shoe-repaint', category: 'Sepatu', service: 'Repaint', price: 150000, icon: 'palette', color: 'violet', description: 'Pemulihan warna setelah pemeriksaan kondisi.' },
+    { id: 'shoe-repair', category: 'Sepatu', service: 'Repair', price: 100000, icon: 'wrench', color: 'emerald', description: 'Perbaikan minor lem, jahitan, atau bagian rusak.' },
+    { id: 'bag-deep-cleaning', category: 'Tas', service: 'Deep Cleaning', price: 65000, icon: 'briefcase-business', color: 'blue', description: 'Pembersihan bagian luar dan dalam tas.' },
+    { id: 'bag-repair', category: 'Tas', service: 'Repair', price: 100000, icon: 'wrench', color: 'emerald', description: 'Perbaikan handle, jahitan, dan komponen tas.' },
+    { id: 'wallet-deep-cleaning', category: 'Dompet', service: 'Deep Cleaning', price: 40000, icon: 'wallet-cards', color: 'blue', description: 'Pembersihan detail sesuai material dompet.' },
+    { id: 'hat-deep-cleaning', category: 'Topi', service: 'Deep Cleaning', price: 35000, icon: 'circle-dot-dashed', color: 'blue', description: 'Pembersihan topi dengan penanganan bentuk.' }
+  ];
+
+  const services = Object.fromEntries(catalog.filter(item => item.category === 'Sepatu').map(item => [item.service, item.price]));
 
   function toNumber(value) {
     const number = Number(value);
@@ -55,5 +61,19 @@
     return { currentStep: !done[0] ? 1 : !done[1] ? 2 : !done[2] ? 3 : 4, done };
   }
 
-  return { customers, services, calculateLineTotal, calculateOrderTotal, calculatePayment, findCustomers, getJourneyState };
+  function addCatalogItem(cart, catalogId) {
+    const product = catalog.find(item => item.id === catalogId);
+    if (!product) return cart.map(item => ({ ...item }));
+    const next = cart.map(item => ({ ...item }));
+    const existing = next.find(item => item.catalogId === catalogId);
+    if (existing) existing.quantity += 1;
+    else next.push({ catalogId, category: product.category, service: product.service, price: product.price, quantity: 1, name: '', notes: '', targetDate: '', photoCount: 0 });
+    return next;
+  }
+
+  function updateCartQuantity(cart, catalogId, delta) {
+    return cart.map(item => item.catalogId === catalogId ? { ...item, quantity: item.quantity + delta } : { ...item }).filter(item => item.quantity > 0);
+  }
+
+  return { customers, catalog, services, calculateLineTotal, calculateOrderTotal, calculatePayment, findCustomers, getJourneyState, addCatalogItem, updateCartQuantity };
 });
