@@ -52,6 +52,14 @@
     );
   }
 
+  function maskPhone(value) {
+    const digits = String(value || '').replace(/\D/g, '');
+    if (digits.length <= 7) return digits;
+    const visibleEnd = 4;
+    const visibleStart = Math.min(4, digits.length - visibleEnd);
+    return `${digits.slice(0, visibleStart)}${'•'.repeat(digits.length - visibleStart - visibleEnd)}${digits.slice(-visibleEnd)}`;
+  }
+
   function getJourneyState(customerComplete, itemsComplete, paymentComplete) {
     const done = [
       Boolean(customerComplete),
@@ -75,5 +83,5 @@
     return cart.map(item => item.catalogId === catalogId ? { ...item, quantity: item.quantity + delta } : { ...item }).filter(item => item.quantity > 0);
   }
 
-  return { customers, catalog, services, calculateLineTotal, calculateOrderTotal, calculatePayment, findCustomers, getJourneyState, addCatalogItem, updateCartQuantity };
+  return { customers, catalog, services, calculateLineTotal, calculateOrderTotal, calculatePayment, findCustomers, maskPhone, getJourneyState, addCatalogItem, updateCartQuantity };
 });
