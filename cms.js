@@ -1,4 +1,4 @@
-const titles={dashboard:'Ringkasan Konten',promo:'Kelola Promo',harga:'Kelola Daftar Harga',galeri:'Kelola Galeri',layanan:'Kelola Layanan'};
+const titles={dashboard:'Dashboard Content',promo:'Kelola Promo',harga:'Kelola Daftar Harga',galeri:'Kelola Galeri',layanan:'Kelola Layanan'};
 const quick=[['promo','badge-percent','Promo','Buat dan jadwalkan campaign'],['harga','receipt-text','Daftar Harga','Perbarui harga treatment'],['galeri','images','Galeri','Upload hasil pengerjaan'],['layanan','sparkles','Layanan','Atur layanan yang tersedia']];
 const prices=[['Deep Cleaning','Cleaning','Rp 45.000'],['Unyellowing','Treatment','Rp 75.000'],['Repaint','Restorasi','Rp 150.000']];
 const services=[['Deep Cleaning','assets/layanan-deep-cleaning.jpg'],['Unyellowing','assets/layanan-unyellowing.jpg'],['Repaint','assets/layanan-repaint.jpg']];

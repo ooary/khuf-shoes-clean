@@ -27,7 +27,8 @@
     <div class="flex items-center justify-between mb-7"><img src="assets/khuf-logo.png" alt="Khuf" class="w-28 h-14 object-contain"><button id="closeMenu" class="lg:hidden p-2" aria-label="Tutup menu"><i data-lucide="x" class="w-5"></i></button></div>
     <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">POS</p>
     <nav class="space-y-1">
-      <button class="nav-item active" data-nav="dashboard"><i data-lucide="layout-dashboard" class="w-4"></i>Ringkasan</button>
+      <button class="nav-item active" data-nav="dashboard"><i data-lucide="layout-dashboard" class="w-4"></i>Dashboard Sales</button>
+      <a class="nav-item" href="kasir.html"><i data-lucide="shopping-cart" class="w-4"></i>Kasir POS</a>
       <button class="nav-item" data-nav="orders"><i data-lucide="clipboard-list" class="w-4"></i>Order & Pengerjaan</button>
       <button class="nav-item" data-nav="customers"><i data-lucide="users" class="w-4"></i>Pelanggan</button>
       <button class="nav-item" data-nav="services"><i data-lucide="sparkles" class="w-4"></i>Layanan & Harga</button>
@@ -35,7 +36,7 @@
     <div class="mt-5 pt-5 border-t border-slate-100">
       <p class="px-3 mb-2 text-[10px] font-bold tracking-[.2em] text-slate-400">CMS</p>
       <nav class="space-y-1">
-        <a href="cms.html#dashboard" class="nav-item"><i data-lucide="panels-top-left" class="w-4"></i>Ringkasan Konten</a>
+        <a href="cms.html#dashboard" class="nav-item"><i data-lucide="panels-top-left" class="w-4"></i>Dashboard Content</a>
         <a href="cms.html#promo" class="nav-item"><i data-lucide="badge-percent" class="w-4"></i>Promo</a>
         <a href="cms.html#harga" class="nav-item"><i data-lucide="receipt-text" class="w-4"></i>Daftar Harga</a>
         <a href="cms.html#galeri" class="nav-item"><i data-lucide="images" class="w-4"></i>Galeri</a>
@@ -51,7 +52,7 @@
 
   <main class="ml-64 min-h-screen">
     <header class="h-20 bg-white/90 backdrop-blur border-b border-slate-200 px-5 md:px-8 flex items-center justify-between sticky top-0 z-30">
-      <div class="flex items-center gap-3"><button id="openMenu" class="lg:hidden p-2 rounded-lg bg-slate-100" aria-label="Buka menu"><i data-lucide="menu" class="w-5"></i></button><div><p class="text-xs text-slate-400">Khuf Studio</p><h1 id="pageTitle" class="font-bold">Ringkasan Operasional</h1></div></div>
+      <div class="flex items-center gap-3"><button id="openMenu" class="lg:hidden p-2 rounded-lg bg-slate-100" aria-label="Buka menu"><i data-lucide="menu" class="w-5"></i></button><div><p class="text-xs text-slate-400">Khuf Studio</p><h1 id="pageTitle" class="font-bold">Dashboard Sales</h1></div></div>
       <div class="flex items-center gap-3"><div class="desktop-only text-right"><p class="text-xs font-semibold">Jumat, 31 Juli 2026</p><p class="text-[11px] text-slate-400">Pejaten Barat</p></div><div class="w-10 h-10 rounded-full bg-slate-950 text-white grid place-items-center text-xs font-bold">KC</div></div>
     </header>
 
@@ -132,6 +133,6 @@
   </aside>
 
   <div id="toast" class="fixed right-5 bottom-5 translate-y-24 opacity-0 transition-all bg-slate-950 text-white rounded-xl px-5 py-3 text-sm shadow-xl z-[80]">Aksi tersimpan di mockup</div>
-  <script src="pos-runtime.260731d.js"></script>
+  <script src="pos-runtime.260731e.js"></script>
 </body>
 </html>
