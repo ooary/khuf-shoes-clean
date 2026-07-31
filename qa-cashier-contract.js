@@ -15,15 +15,19 @@ assert(pos.includes('Dashboard Content'), 'POS sidebar must say Dashboard Conten
 assert(cms.includes('href="kasir.html"'), 'CMS sidebar must link to cashier page');
 assert(pos.includes('href="kasir.html"'), 'POS sidebar must link to cashier page');
 
-for (const id of ['serviceSearch','serviceCatalog','cartItems','cartCount','customerSearch','customerName','customerPhone','customerAddress','paymentStatus','paymentMethod','amountPaid','orderTotal','amountDue','createOrderButton','downloadReceiptButton','mobileCartButton']) {
+for (const id of ['customerStep','continueToCatalogButton','catalogStep','serviceSearch','serviceCatalog','cartItems','cartCount','customerSearch','customerName','customerPhone','customerAddress','orderPhoto','paymentStatus','paymentMethod','amountPaid','orderTotal','amountDue','createOrderButton','downloadReceiptButton','mobileCartButton']) {
   assert(cashier.includes(`id="${id}"`), `cashier page missing #${id}`);
 }
+assert(cashier.indexOf('id="customerStep"') < cashier.indexOf('id="catalogStep"'), 'customer step must appear before service catalog');
+assert(cashier.includes('id="catalogStep" class="hidden'), 'service catalog must be hidden until customer is complete');
+assert(cashier.includes('id="serviceCatalog" class="grid grid-cols-2'), 'mobile catalog must render two cards per row');
 assert(!cashierSurface.includes('item-category'), 'cashier must not use category dropdowns');
 assert(!cashierSurface.includes('item-service'), 'cashier must not use service dropdowns');
 assert(cashierSurface.includes('data-catalog-id'), 'service cards must be add-to-cart controls');
 assert(cashierSurface.includes('cart-increase'), 'cart must support quantity increase');
 assert(cashierSurface.includes('cart-decrease'), 'cart must support quantity decrease');
-assert(cashierSurface.includes('multiple'), 'cashier photos input must support multiple files');
+assert(!cashierSurface.includes('detail-photos'), 'photos must not be repeated for every item');
+assert(!cashier.includes('id="orderPhoto"') || !cashier.match(/id="orderPhoto"[^>]*multiple/), 'order photo must accept only one file');
 assert(cashier.includes('vendor-jspdf.2.5.1.min.js'), 'cashier must load the local PDF library');
 assert(cashierJs.includes("assets/khuf-logo.png"), 'receipt must load the real Khuf logo asset');
 assert(cashierJs.includes('addImage'), 'receipt PDF must embed the Khuf logo image');
